@@ -111,9 +111,9 @@ body {
 	line-height: 1;
 }
 
-#alert{
+#alert {
 	position: fixed;
-	top: 5%;
+	top: 7%;
 	left: 42%;
 	width: 16vw;
 	height: 8vh;
@@ -124,6 +124,24 @@ body {
 	align-items: center;
 	justify-content: center;
 	box-shadow: 0px 3px 10px black;
+}
+
+.edition{
+	transition-duration: 2s;
+	background-color: black;
+	width: 100%;
+	height: 0vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.edition p{
+	color: white;
+	font-size: 16px;
+	white-space: nowrap;
+}
+.edition p i{
+	margin-right: 6%;
 }
 
 ol,
@@ -159,6 +177,7 @@ body {
 
 header {
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 	margin: 50px 0;
 }
@@ -182,33 +201,6 @@ h1>span {
 	letter-spacing: 0.1em;
 }
 
-.div-title-gallery {
-	display: flex;
-	align-items: center;
-	flex-direction: row;
-	justify-content: center;
-}
-
-.div-title-gallery p {
-	width: 10%;
-	margin-left: 1vw;
-	font-size: 14px;
-	font-family: Work Sans;
-	font-weight: 400;
-	word-wrap: break-word;
-	cursor: pointer;
-	visibility: hidden;
-}
-
-.div-title-gallery p i {
-	margin-right:4%;
-}
-
-.div-title-gallery h2 {
-	margin-left: 6vw;
-	font-family: 'Syne';
-}
-
 h2 {
 	font-family: 'Syne';
 	font-weight: 700;
@@ -226,11 +218,19 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-#log {
-	cursor: pointer;
+nav li img{
+	height: 3vh;
 }
+
+/* #log {
+
+} */
 
 li:hover {
 	color: #B1663C;
@@ -266,6 +266,35 @@ li:hover {
 #portfolio h2 {
 	text-align: center;
 }
+
+
+.div-title-gallery {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.div-title-gallery p {
+	width: 10%;
+	margin-left: 1vw;
+	font-size: 14px;
+	font-family: Work Sans;
+	font-weight: 400;
+	word-wrap: break-word;
+	cursor: pointer;
+	visibility: hidden;
+}
+
+.div-title-gallery p i {
+	margin-right: 4%;
+}
+
+.div-title-gallery h2 {
+	margin-left: 6vw;
+	font-family: 'Syne';
+}
+
 
 /* ******************************************************* */
 .filter {
@@ -308,8 +337,87 @@ li:hover {
 }
 
 
+.modifier_interface{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	visibility: hidden;
+}
+.modifier_interface div{
+	position: relative;
+}
 
+.modifier_interface .content{
+	width: 35%;
+	background-color: white;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	border-radius: 10px;
+}
 
+.modifier_interface div .list_works{
+	width: 87%;
+	height: auto;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+.modifier_interface div .list_works figure{
+	margin: 1%;
+	padding: 0;
+	position: relative;
+}
+.modifier_interface div .list_works figure img{
+	width: 105px;
+}
+.modifier_interface div .list_works figure i{
+	color: white;
+	background-color: black;
+	width: 23%;
+	aspect-ratio: 1/1;
+	font-size: 0.8vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 5px;
+}
+.modifier_interface div h2{
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+.modifier_interface div hr{
+	border: none;
+	width: 80%;
+	height: 1px;
+	margin: 5%;
+	background-color: gray;
+}
+.modifier_interface div button{
+	border: none;
+	margin-bottom: 5%;
+	width: 30%;
+	height: 3.5vh;
+	border-radius: 60px;
+	background-color: #1D6154;
+	color: white;
+	font-size: 14px;
+	cursor: pointer;
+}
+.modifier_interface div i{
+	position: absolute;
+	right: 5%;
+	top: 5%;
+	font-size: 1.2vw;
+	cursor: pointer;
+}
 
 #contact {
 	width: 50%;
