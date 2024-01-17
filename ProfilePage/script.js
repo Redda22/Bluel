@@ -29,7 +29,6 @@ async function main() {
     if (token) {
         connected = true;
     }
-
     // si nous somme connecté :
     if (connected) {
         log.innerHTML = "logout"; // changement de login en logout
@@ -50,7 +49,6 @@ async function main() {
         edition.style.height = "5.5vh";
 
     }
-
     // condition du boutton login et logout
     log.addEventListener("click", function () {
         // en cas de clique si je suis connecté :
@@ -81,12 +79,38 @@ async function main() {
     });
 
 
+    let btnState = []; // tableau destiné à contenir tout les états de chaque bouttons du filtre
 
+    // Affichage des travaux
+    async function works() {
+        try {
+            const works = await fetch("http://localhost:5678/api/works"); // Récupération des données depuis l'API
+            let worksData = await works.json(); // Conversion de la réponse en format JSON
 
-    // tableau destiné à contenir tout les états de chaque bouttons du filtre
-    let btnState = [];
+            gallery.innerHTML = "";
 
+            worksData.forEach(dataGroup => { // Parcours de chaque groupe de données
+                cards[dataGroup.id] = document.createElement("figure"); // Crée un élément <figure> pour chaque projet
+                img[dataGroup.id] = document.createElement("img"); // Crée un élément <img> pour chaque projet
+                title[dataGroup.id] = document.createElement("figcaption"); // Crée un élément <figcaption> pour chaque projet
 
+                if (filterState == "" || filterState == dataGroup.category.name) {
+
+                    img[dataGroup.id].src = dataGroup.imageUrl; // Définit l'attribut 'src' de <img>
+                    title[dataGroup.id].textContent = dataGroup.title; // Définit le texte de <figcaption>
+
+                    cards[dataGroup.id].appendChild(img[dataGroup.id]); // Ajoute <img> à <figure>
+                    cards[dataGroup.id].appendChild(title[dataGroup.id]); // Ajoute <figcaption> à <figure>
+
+                    gallery.appendChild(cards[dataGroup.id]); // Ajoute <figure> à l'élément 'gallery' dans le DOM
+                }
+            });
+        }
+        catch (error) {
+            console.log("Une erreur est survenue: ", error);
+        }
+
+    }
     // Système de filtre des cartes
     async function Cards_System() {
 
@@ -150,56 +174,54 @@ async function main() {
             console.log("Une erreur est survenue: ", error);
         }
     }
-
     Cards_System();
 
-    async function works() {
-        try {
-            const works = await fetch("http://localhost:5678/api/works"); // Récupération des données depuis l'API
-            let worksData = await works.json(); // Conversion de la réponse en format JSON
 
-            gallery.innerHTML = "";
+    let modifier_interface = document.querySelector(".modifier_interface"); // interface de modification de la gallerie
+    let gallery_interface = document.querySelector(".gallery_interface");
+    let add_work = document.querySelector(".add_work");
 
-            worksData.forEach(dataGroup => { // Parcours de chaque groupe de données
-                cards[dataGroup.id] = document.createElement("figure"); // Crée un élément <figure> pour chaque projet
-                img[dataGroup.id] = document.createElement("img"); // Crée un élément <img> pour chaque projet
-                title[dataGroup.id] = document.createElement("figcaption"); // Crée un élément <figcaption> pour chaque projet
+    let arrow_back = document.querySelector(".arrow_back");
 
-                if (filterState == "" || filterState == dataGroup.category.name) {
+    let gallery_close = document.querySelector(".gallery_close"); // boutton de fermeture de la gallerie d'édition
+    let add_work_close = document.querySelector(".add_work_close");
 
-                    img[dataGroup.id].src = dataGroup.imageUrl; // Définit l'attribut 'src' de <img>
-                    title[dataGroup.id].textContent = dataGroup.title; // Définit le texte de <figcaption>
+    let button_add = document.querySelector(".button_add"); // boutton d'ajout de travaux
 
-                    cards[dataGroup.id].appendChild(img[dataGroup.id]); // Ajoute <img> à <figure>
-                    cards[dataGroup.id].appendChild(title[dataGroup.id]); // Ajoute <figcaption> à <figure>
+    let list_works = document.querySelector(".list_works"); // div contenant la liste des travaux éditable dans l'interface de modification
+    let snaps = []; // les <figure> contenant chaque img de travaux
+    let trash = []; // logo poubelle dans chaque snaps
 
-                    gallery.appendChild(cards[dataGroup.id]); // Ajoute <figure> à l'élément 'gallery' dans le DOM
-                }
-            });
-        }
-        catch (error) {
-            console.log("Une erreur est survenue: ", error);
-        }
-
-    }
-
-    let list_works = document.querySelector(".list_works");
-    let modifier_interface = document.querySelector(".modifier_interface");
-    let button_add = document.querySelector(".button_add");
-    let snaps = [];
-    let trash = [];
-    let gallery_close = document.querySelector(".gallery_close");
-    let delete_works = [];
 
     modifier_button.addEventListener("click", function () {
-        modifier_interface.style.visibility = "visible";
+        modifier_interface.style.display = "flex";
+        gallery_interface.style.display = "flex";
+        add_work.style.display = "none";
         modifier();
     });
-
     gallery_close.addEventListener("click", function () {
-        modifier_interface.style.visibility = "hidden";
+        modifier_interface.style.display = "none";
+    });
+    add_work_close.addEventListener("click", function () {
+        modifier_interface.style.display = "none";
     });
 
+
+
+    button_add.addEventListener("click", function () {
+        gallery_interface.style.display = "none";
+        add_work.style.display = "flex";
+        add_select();
+
+    })
+    arrow_back.addEventListener("click", function () {
+        gallery_interface.style.display = "flex";
+        add_work.style.display = "none";
+        choose_photo.style.display = "flex";
+        imgPreview.style.display = "none";
+    })
+
+    // affichage des travaux à modifier avec posibilité des les supprimer
     async function modifier() {
         try {
             const works = await fetch("http://localhost:5678/api/works"); // Récupération des données depuis l'API
@@ -216,7 +238,7 @@ async function main() {
                 snaps[dataGroup.id].appendChild(img); // Ajoute <img> à <figure>
 
                 trash[dataGroup.id] = document.createElement("i"); // Crée un élément <i> pour chaque projet
-                trash[dataGroup.id].classList.add('fa-solid', 'fa-trash-can', 'trash' + dataGroup.id);
+                trash[dataGroup.id].classList.add('fa-solid', 'fa-trash-can', 'trash');
                 snaps[dataGroup.id].appendChild(trash[dataGroup.id]);
 
                 list_works.appendChild(snaps[dataGroup.id]);
@@ -229,20 +251,12 @@ async function main() {
 
 
             });
-
-            if (delete_works) {
-                console.log(delete_works)
-            }
         }
         catch (error) {
             console.log("Une erreur est survenue: ", error);
         }
-
-
-
     }
-
-
+    // suppression de travaux
     async function deleteData(url) {
         try {
             let response = await fetch(url, {
@@ -256,8 +270,6 @@ async function main() {
             if (!response.ok) {
                 throw new Error(`Erreur HTTP: ${response.status}`);
             }
-
-            return await response.json();
         } catch (error) {
             console.error("Erreur lors de la suppression des données :", error);
         }
@@ -267,8 +279,124 @@ async function main() {
         works();
     }
 
+    let urlImg = "";
+
+    let add_button = document.querySelector(".add_photo #add_button");
+    let add_img_input = document.querySelector(".add_photo input");
+
+    let choose_photo = document.querySelector(".choose_photo");
+
+    add_button.addEventListener("click", function () {
+        add_img_input.click();
+    });
+
+    var imagePreview = "";
+
+    add_img_input.addEventListener("change", function (event) {
+        var file = event.target.files[0];
+        if (file) {
+            var reader = new FileReader(); // Crée un FileReader
+            reader.onload = function (e) {
+                imgPreview = document.getElementById('imagePreview');
+                imgPreview.src = e.target.result; // Résultat de FileReader
+                urlImg = e.target.result;
+
+                choose_photo.style.display = "none";
+                imgPreview.style.display = "block";
+
+                // Si il y'a une image lié et un titre associé sur la page d'ajout, alors mettre le boutton d'ajout en vert
+                if (/\S/.test(titre_select.value) && urlImg != "") {
+                    add_validate.style.backgroundColor = "#1D6154";
+                }
+                else{
+                    add_validate.style.backgroundColor = "#A7A7A7";
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    })
+
+    let list_select = document.getElementById("categorie");
+    let titre_select = document.getElementById("titre");
+
+
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+    }
+
+    let add_validate = document.querySelector(".add_validate");
+
+    document.addEventListener('keyup', function() {
+        // Si il y'a une image lié et un titre associé sur la page d'ajout, alors mettre le boutton d'ajout en vert
+        if (/\S/.test(titre_select.value) && urlImg != "") {
+            add_validate.style.backgroundColor = "#1D6154";
+        }
+        else{
+            add_validate.style.backgroundColor = "#A7A7A7";
+        }
+    });
+
+    add_validate.addEventListener("click", function () {
+
+        if (urlImg && titre_select.value != "") {
+
+            var imgBlob = dataURLtoBlob(urlImg);
+            let formData = new FormData();
+            //formData.append('id', 50);
+            formData.append('image', imgBlob); // Assurez-vous que c'est un objet File ou Blob
+            formData.append('title', titre_select.value);
+            formData.append('category', list_select.selectedIndex + 1);
+            //formData.append('userId', 1);
+
+            fetch('http://localhost:5678/api/works', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP, statut : ${response.status}`);
+                    }
+                    works();
+                    modifier();
+                    return response.json();
+                })
+                .then(data => console.log('Réponse de l\'API :', data))
+                .catch(error => console.error('Erreur lors de la requête fetch:', error));
+        }
+        else {
+            console.log("information manquante");
+        }
+
+
+    })
+
+
+    let options = [];
+    async function add_select() {
+        try {
+            const categories = await fetch("http://localhost:5678/api/categories");
+            let categoriesData = await categories.json();
+            categoriesData.forEach(dataGroup => {
+                options[dataGroup.id] = document.createElement("option");
+                options[dataGroup.id].textContent = dataGroup.name;
+                document.getElementById("categorie").appendChild(options[dataGroup.id]);
+            });
+        }
+        catch (error) {
+            console.log("Une erreur est survenue: ", error);
+        }
+    }
+
 
 }
-
 
 main();

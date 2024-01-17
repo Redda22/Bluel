@@ -347,7 +347,8 @@ li:hover {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	visibility: hidden;
+	display: none;
+	
 }
 .modifier_interface div{
 	position: relative;
@@ -362,7 +363,8 @@ li:hover {
 	border-radius: 10px;
 }
 
-.modifier_interface div .list_works{
+
+.modifier_interface .gallery_interface .list_works{
 	width: 87%;
 	height: auto;
 	display: flex;
@@ -370,15 +372,15 @@ li:hover {
 	flex-wrap: wrap;
 	justify-content: flex-start;
 }
-.modifier_interface div .list_works figure{
+.modifier_interface .gallery_interface .list_works figure{
 	margin: 1%;
 	padding: 0;
 	position: relative;
 }
-.modifier_interface div .list_works figure img{
+.modifier_interface .gallery_interface .list_works figure img{
 	width: 105px;
 }
-.modifier_interface div .list_works figure i{
+.modifier_interface .gallery_interface .list_works figure i{
 	color: white;
 	background-color: black;
 	width: 23%;
@@ -388,19 +390,26 @@ li:hover {
 	align-items: center;
 	justify-content: center;
 	border-radius: 5px;
+	position: absolute;
+	right: 5%;
+	top: 5%;
+	cursor: pointer;
 }
-.modifier_interface div h2{
+.modifier_interface .gallery_interface h2, .add_work h2{
+	font-family: Work Sans;
+	font-weight: 400;
+	color: black;
 	margin-top: 10%;
 	margin-bottom: 10%;
 }
-.modifier_interface div hr{
+.modifier_interface .gallery_interface hr, .add_work hr{
 	border: none;
 	width: 80%;
 	height: 1px;
 	margin: 5%;
 	background-color: gray;
 }
-.modifier_interface div button{
+.modifier_interface .gallery_interface button{
 	border: none;
 	margin-bottom: 5%;
 	width: 30%;
@@ -411,13 +420,106 @@ li:hover {
 	font-size: 14px;
 	cursor: pointer;
 }
-.modifier_interface div i{
+.modifier_interface .add_work .add_validate{
+	background-color: #A7A7A7;
+	border: none;
+	margin-bottom: 5%;
+	width: 30%;
+	height: 3.5vh;
+	border-radius: 60px;
+	color: white;
+	font-size: 14px;
+	cursor: pointer;
+}
+.modifier_interface div .gallery_close, .add_work_close{
 	position: absolute;
 	right: 5%;
 	top: 5%;
 	font-size: 1.2vw;
 	cursor: pointer;
 }
+.modifier_interface div .arrow_back{
+	position: absolute;
+	left: 5%;
+	top: 5%;
+	font-size: 1.2vw;
+	cursor: pointer;
+}
+
+.modifier_interface .add_work{
+	
+}
+.modifier_interface .add_work .add_photo{
+	background-color: #E8F1F6;
+	height: 20vh;
+	width: 70%;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+.add_photo .choose_photo{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+.add_photo #imagePreview{
+	height: 100%;
+	display: none;
+}
+.add_photo i{
+	font-size: 4vw;
+	color: #B9C5CC;
+}
+.add_photo #add_button{
+	font-family: Work Sans;
+	border: none;
+	border-radius: 60px;
+	background-color: #B9C5CC;
+	color: #306685;
+	width: 40%;
+	height: 3.3vh;
+	cursor: pointer;
+	font-size: 0.8vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.add_photo input{
+	visibility: hidden;
+}
+.add_photo p{
+	font-size: 0.6vw;
+}
+
+.add_work .add_info{
+	width: 70%;
+	height: 8vh;
+	margin-top: 5%;
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.add_info h4{
+	font-family: Work Sans;
+	font-size: 0.8vw;
+}
+.add_info select, .add_info input{
+	width: 100%;
+	height: 60%;
+	border: none;
+	outline: none;
+	box-shadow: 0px 5px 5px gray;
+	margin: 0;
+	padding: 0;
+}
+
+
 
 #contact {
 	width: 50%;
