@@ -35,6 +35,7 @@ async function main() {
 
         modifier_button.style.visibility = "visible"; // boutton de modification des travaux visible
 
+        filter.style.display = "none"
         // affichage de l'alerteur de connexion
         conn_alert.style.visibility = "visible";
         conn_alert.style.backgroundColor = "rgba(50, 150, 0, 1)";
@@ -57,6 +58,9 @@ async function main() {
             localStorage.removeItem('Token'); // suppression du token du localstorage
 
             log.innerHTML = "login"; // mettre le bouton en mode login
+
+            filter.style.display = "flex"
+            btnState.fill(false);
 
             modifier_button.style.visibility = "hidden"; // suppression du boutton de modification des travaux
             edition.style.height = "0vh"; // suppression de la div de mode édition
@@ -121,6 +125,7 @@ async function main() {
             // le tout dans le tableau de donnée categoriesData
             let categoriesData = await categories.json();
 
+            
             // pour chaque groupe de donnée dans le tableau de donnée. Un groupe correspond à : {"id": 1, "name": "Objets"}
             categoriesData.forEach(dataGroup => {
                 btns[dataGroup.id] = document.createElement("button"); // création d'un boutton
@@ -135,37 +140,45 @@ async function main() {
             btns.forEach(btn => {
                 // écouter chaque bouttons
                 btn.addEventListener("click", function () {
-
                     let btnNumber = parseInt(btn.id.match(/\d+/) - 1); // numérotation du boutton sous forme int. à travers match on recherche le numéro de l'id. -1 car btnState commence par 0
-
                     // Si l'état du boutton est false alors :
                     if (btnState[btnNumber] == false) {
 
                         btnState.fill(false); // mettre les états de tout les bouttons en false
-
                         btnState[btnNumber] = true; // mettre le button correspondant à l'actuelle btnNumber en true
-
                         filterState = categoriesData[btnNumber].name; // donner un état au filtre
 
                         btns.forEach(otherBtn => {
                             otherBtn.style.backgroundColor = "white";
                             otherBtn.style.color = "#1D6154";
                         });
+                        btn_all.style.backgroundColor = "white";
+                        btn_all.style.color = "#1D6154";
 
                         btn.style.backgroundColor = "#1D6154";
                         btn.style.color = "white";
                         works();
                     }
-                    // si l'état du boutton est true, et que l'on reclique dessus, alors on réinitialise tout les bouttons et l'état du filtre
-                    else {
-                        btnState.fill(false);
-                        filterState = "";
-                        btn.style.backgroundColor = "white";
-                        btn.style.color = "#1D6154";
-                        works();
-                    }
                 });
             });
+
+            let btn_all = document.getElementById("btn_all");
+
+            btn_all.style.backgroundColor = "#1D6154";
+            btn_all.style.color = "white";
+
+            btn_all.addEventListener("click", function () {
+                btns.forEach(otherBtn => {
+                    otherBtn.style.backgroundColor = "white";
+                    otherBtn.style.color = "#1D6154";
+                });
+                btn_all.style.backgroundColor = "#1D6154";
+                btn_all.style.color = "white";
+                btnState.fill(false);
+                filterState = "";
+                works();
+            });
+
 
             works();
 
@@ -392,9 +405,11 @@ async function main() {
                     }
                     works();
                     modifier();
-                    return response.json();
+                    add_work.style.display = "none";
+                    modifier_interface.style.display = "none";
+                    console.log(response.json());
                 })
-                .then(data => console.log('Réponse de l\'API :', data))
+                //.then(data => console.log('Réponse de l\'API :', data))
                 .catch(error => console.error('Erreur lors de la requête fetch:', error));
         }
         else {
@@ -415,6 +430,7 @@ async function main() {
                 options[dataGroup.id].textContent = dataGroup.name;
                 document.getElementById("categorie").appendChild(options[dataGroup.id]);
             });
+
         }
         catch (error) {
             console.log("Une erreur est survenue: ", error);
