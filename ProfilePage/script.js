@@ -210,7 +210,9 @@ async function main() {
 
     button_add.addEventListener("click", function () {
         gallery_interface.style.display = "none";
+        imgPreview.style.display = "none";
         add_work.style.display = "flex";
+        choose_photo.style.display = "flex";
         add_select();
 
     })
@@ -219,6 +221,16 @@ async function main() {
         add_work.style.display = "none";
         choose_photo.style.display = "flex";
         imgPreview.style.display = "none";
+        
+    })
+
+    modifier_interface.addEventListener("click", function (event) {
+        if (event.target === this) {
+            modifier_interface.style.display = "none";
+            imgPreview.style.display = "none";
+            add_work.style.display = "none";
+            gallery_interface.style.display = "none";
+        }
     })
 
     // affichage des travaux à modifier avec posibilité des les supprimer
@@ -290,14 +302,14 @@ async function main() {
         add_img_input.click();
     });
 
-    var imagePreview = "";
+    let imgPreview = document.getElementById('imagePreview');
 
     add_img_input.addEventListener("change", function (event) {
         var file = event.target.files[0];
-        if (file) {
+        if (file && file.size <= 4 * 1024 * 1024) {
             var reader = new FileReader(); // Crée un FileReader
             reader.onload = function (e) {
-                imgPreview = document.getElementById('imagePreview');
+                imgPreview.src = "";
                 imgPreview.src = e.target.result; // Résultat de FileReader
                 urlImg = e.target.result;
 
@@ -307,12 +319,22 @@ async function main() {
                 // Si il y'a une image lié et un titre associé sur la page d'ajout, alors mettre le boutton d'ajout en vert
                 if (/\S/.test(titre_select.value) && urlImg != "") {
                     add_validate.style.backgroundColor = "#1D6154";
+                    add_validate.style.cursor = "pointer";
                 }
                 else{
                     add_validate.style.backgroundColor = "#A7A7A7";
+                    add_validate.style.cursor = "not-allowed";
                 }
+                
             };
             reader.readAsDataURL(file);
+
+            // réinitialiser file après le chargement
+            this.value = "";
+        }
+        else{
+            alert("Le fichier est trop volumineux. Veuillez sélectionner un fichier de moins de 4 Mo.");
+            return;
         }
     })
 
@@ -329,18 +351,21 @@ async function main() {
         return new Blob([u8arr], { type: mime });
     }
 
-    let add_validate = document.querySelector(".add_validate");
+    
 
     document.addEventListener('keyup', function() {
         // Si il y'a une image lié et un titre associé sur la page d'ajout, alors mettre le boutton d'ajout en vert
         if (/\S/.test(titre_select.value) && urlImg != "") {
             add_validate.style.backgroundColor = "#1D6154";
+            add_validate.style.cursor = "pointer";
         }
         else{
             add_validate.style.backgroundColor = "#A7A7A7";
+            add_validate.style.cursor = "not-allowed";
         }
     });
 
+    let add_validate = document.querySelector(".add_validate");
     add_validate.addEventListener("click", function () {
 
         if (urlImg && titre_select.value != "") {
