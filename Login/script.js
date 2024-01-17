@@ -14,9 +14,9 @@ async function conn() {
     let password = document.getElementById("password").value;
 
     const url = "http://localhost:5678/api/users/login";
-    const data = { email: email, password: password };
+    const data = { email: email, password: password };    
 
-    try {
+    try {     
         // attente d'une réponse provenant de l'url
         const response = await fetch(url, {
             method: 'POST', // spécification de la méthode http à utiliser
