@@ -110,7 +110,7 @@ arrow_back.addEventListener("click", function () {
     add_work.style.display = "none";
     choose_photo.style.display = "flex";
     imgPreview.style.display = "none";
-
+    list_select.innerHTML = "";
 })
 modifier_interface.addEventListener("click", function (event) {
     if (event.target === this) {
