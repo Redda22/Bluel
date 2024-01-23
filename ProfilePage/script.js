@@ -133,6 +133,7 @@ button_add.addEventListener("click", function () {
     add_select(); // recherche de chaque categories disponible dans l'API et les mettres en options
 
 })
+// Fonction d'affichage des catégories dans la div d'ajout de photo
 async function add_select() {
     try {
         const categories = await fetch("http://localhost:5678/api/categories");
@@ -313,7 +314,6 @@ async function Cards_System() {
         console.log("Une erreur est survenue: ", error);
     }
 }
-
 async function works() {
     try {
         const works = await fetch("http://localhost:5678/api/works"); // Récupération des données depuis l'API
@@ -377,7 +377,6 @@ async function modifier() {
         console.log("Une erreur est survenue: ", error);
     }
 }
-
 async function deleteData(url) {
     try { // Essaie de fetch avec l'url donné précédement, en method delete
         let response = await fetch(url, {
@@ -401,11 +400,11 @@ async function deleteData(url) {
     modifier(); // dans la gallerie de modification
     works(); // Dans la gallerie principale
 }
-
 // Fonction pour post d'un nouveau work
 async function post_work() {
 
-    var imgBlob = dataURLtoBlob(dataImg); // Conversion en blob
+    // Blob : données binaire sous forme d'octets bruts
+    var imgBlob = dataImgtoBlob(dataImg); // Conversion en blob
 
     // Formulaire de données adapté à l'API
     let formData = new FormData();
@@ -439,7 +438,7 @@ async function post_work() {
         .catch(error => console.error('Erreur lors de la requête fetch:', error));
 }
 // Fonction de conversion de l'image sélectionné en blob
-function dataURLtoBlob(dataImg) {
+function dataImgtoBlob(dataImg) {
     var arr = dataImg.split(','), // Divise la Data URL en deux parties
         mime = arr[0].match(/:(.*?);/)[1], // Extrait le type MIME de la première partie
         bstr = atob(arr[1]), // Décodage base64 pour obtenir une chaîne binaire
@@ -461,6 +460,5 @@ function alert(text, color) {
     // Affichage pendant 2s
     setTimeout(function () {
         conn_alert.style.visibility = "hidden";
-        edition.style.visibility = "hidden";
     }, 2000);
 }
